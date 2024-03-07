@@ -36,7 +36,10 @@ async fn main() -> anyhow::Result<()> {
     tokio::time::sleep(Duration::from_secs(11)).await;
 
     let consumer = fluvio.partition_consumer(topic_name.clone(), 0).await?;
-    let mut stream = consumer.stream(Offset::absolute(0)?).await?;
+
+    //// behaves the same as
+    // let mut stream = consumer.stream(Offset::absolute(0)?).await?;
+    let mut stream = consumer.stream(Offset::beginning()).await?;
 
     while let Some(rec) = stream.next().await {
         match rec {
